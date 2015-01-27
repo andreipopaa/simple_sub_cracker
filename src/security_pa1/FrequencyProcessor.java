@@ -5,12 +5,13 @@
  */
 package security_pa1;
 
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -20,11 +21,13 @@ public class FrequencyProcessor {
     
     private File frequencyFile;
     private int[] freq; 
+    private double[] frequencies;
     private double characterCount;
     private boolean isCipher;
     
     public FrequencyProcessor(File frequencyFile) {
         this.frequencyFile = frequencyFile;
+        this.frequencies = new double[26];
         this.freq = new int[26];
     }
     
@@ -52,7 +55,7 @@ public class FrequencyProcessor {
         return freq;
     }
     
-    public String[] generateFrequnecyChart() {
+    public String[] generateSortedFrequnecyChart() {
         int asciiAdd = 97;
         if(isCipher) {
             asciiAdd = 65;
@@ -61,14 +64,26 @@ public class FrequencyProcessor {
         String[] data = new String[26];
         for(int i = 0; i < freq.length; i++) {
             double num =(freq[i]/characterCount)*100;
-            String numFreq = String.format( "%.2f", num);
-            String tmp = (char)(i+asciiAdd) + " : " + numFreq + "% \n";
+            frequencies[i] = num;
+        }
+        
+        ArrayList<Double> blahblah = new ArrayList<Double>();
+        for(int x = 0; x < 26; x++) {
+            blahblah.add(frequencies[x]);
+        }
+        Arrays.sort(frequencies);
+
+        for(int i = 0; i < freq.length; i++) {
+       
+            String numFreq = String.format( "%.2f", frequencies[25-i]);
+            int charIndex = blahblah.indexOf(frequencies[25-i]);
+            String tmp = (char)(charIndex+asciiAdd) + " : " + numFreq + "% \n";
             data[i] = tmp;
         }
-            
         return data;
         
     }
+    
     
     // Getters
     public int[] getFrequency() {

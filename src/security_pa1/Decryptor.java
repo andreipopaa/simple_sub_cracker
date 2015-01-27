@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,17 +43,18 @@ public class Decryptor {
                 char[] lineChars = line.toCharArray();
                 
                 for(char ch : lineChars) {
-                    if(ch >= 65 && ch <= 90 ) {                        
-                       output += (char)(mapping[ch-65]);
+                    if(ch >= 65 && ch <= 90 ) {
+                       output += (char)(mapping[ch-65]+97);
                     } else {
                         output += ch;
                     }
                 }
-                
+                output += "\n";
                 writer.write(output);
             }
-            writer.close();
+            
             br.close();
+            writer.close();
             
         } catch(FileNotFoundException e) {
             e.printStackTrace();

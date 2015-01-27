@@ -18,6 +18,7 @@ import javax.swing.JFileChooser;
 public class MainApplicationFrame extends javax.swing.JFrame {
 
     private DefaultListModel model = new DefaultListModel();
+    private int[] mapping = new int[26];
 
     
     /**
@@ -26,7 +27,8 @@ public class MainApplicationFrame extends javax.swing.JFrame {
     public MainApplicationFrame() {
         initComponents();
         mappingList.setModel(model);
-        decryptArea.setEditable(false);
+        cipherArea.setEditable(false);
+        emptyMapping();
     }
 
     /**
@@ -54,8 +56,13 @@ public class MainApplicationFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         mappingList = new javax.swing.JList();
         jScrollPane3 = new javax.swing.JScrollPane();
-        decryptArea = new javax.swing.JTextArea();
+        cipherArea = new javax.swing.JTextArea();
         btnDecrypt = new javax.swing.JButton();
+        btnRemoveMapping = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        decryptArea = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -120,9 +127,10 @@ public class MainApplicationFrame extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(mappingList);
 
-        decryptArea.setColumns(20);
-        decryptArea.setRows(5);
-        jScrollPane3.setViewportView(decryptArea);
+        cipherArea.setColumns(20);
+        cipherArea.setLineWrap(true);
+        cipherArea.setRows(5);
+        jScrollPane3.setViewportView(cipherArea);
 
         btnDecrypt.setText("Decrypt");
         btnDecrypt.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +138,22 @@ public class MainApplicationFrame extends javax.swing.JFrame {
                 btnDecryptActionPerformed(evt);
             }
         });
+
+        btnRemoveMapping.setText("Remove");
+        btnRemoveMapping.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveMappingActionPerformed(evt);
+            }
+        });
+
+        decryptArea.setColumns(20);
+        decryptArea.setLineWrap(true);
+        decryptArea.setRows(5);
+        jScrollPane5.setViewportView(decryptArea);
+
+        jLabel4.setText("Cipher Text");
+
+        jLabel5.setText("Decrypted Text");
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -200,42 +224,48 @@ public class MainApplicationFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(openCipher)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cipherFilename, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnMap)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(openFrequency)
-                            .addComponent(jLabel2))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(freqFilename))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(jLabel1)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(18, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDecrypt)
-                        .addGap(31, 31, 31))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnMap)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(openCipher)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cipherFilename, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(62, 62, 62)
+                                .addComponent(jLabel2)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnRemoveMapping))
+                                .addGap(89, 89, 89)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnDecrypt)
+                                .addGap(31, 31, 31))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(openFrequency)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(freqFilename, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,19 +280,34 @@ public class MainApplicationFrame extends javax.swing.JFrame {
                     .addComponent(openFrequency)
                     .addComponent(freqFilename))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addGap(35, 35, 35))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane5)
+                        .addGap(35, 35, 35))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnMap)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRemoveMapping)
+                        .addGap(90, 90, 90))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 125, Short.MAX_VALUE))))
         );
 
         pack();
@@ -277,10 +322,20 @@ public class MainApplicationFrame extends javax.swing.JFrame {
         cipherFile = openFile();
         cipherFilename.setText(cipherFile.getAbsolutePath());
         
+        try {
+          // What to do with the file, e.g. display it in a TextArea
+          cipherArea.read( new FileReader( cipherFile.getAbsolutePath() ), null );
+        } catch (IOException ex) {
+          System.out.println("problem accessing file"+cipherFile.getAbsolutePath());
+        }
+        
+        
         FrequencyProcessor processor = new FrequencyProcessor(cipherFile);
         processor.process(true);
         
-        cipherFreqList.setListData(processor.generateFrequnecyChart());    
+        cipherFreqList.setListData(processor.generateSortedFrequnecyChart()); 
+        model.clear();
+        emptyMapping();
     }//GEN-LAST:event_openCipherActionPerformed
 
     private void openFrequencyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFrequencyActionPerformed
@@ -289,13 +344,15 @@ public class MainApplicationFrame extends javax.swing.JFrame {
         
         FrequencyProcessor processor = new FrequencyProcessor(frequencyFile);
         processor.process(false);
-        plainFreqList.setListData(processor.generateFrequnecyChart());
+        plainFreqList.setListData(processor.generateSortedFrequnecyChart());
     }//GEN-LAST:event_openFrequencyActionPerformed
 
-    private int[] mapping = new int[26];
     private void btnMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMapActionPerformed
-        int cipherIndex = cipherFreqList.getSelectedIndex();
-        int plainIndex = plainFreqList.getSelectedIndex();
+        String selectedCipher = (String)cipherFreqList.getSelectedValue();
+        int cipherIndex = selectedCipher.charAt(0) - 65;
+        
+        String selectedPlain = (String)plainFreqList.getSelectedValue();
+        int plainIndex = selectedPlain.charAt(0) - 97;
         
         if (cipherIndex >= 0 && plainIndex >= 0) {
             mapping[cipherIndex] = plainIndex;
@@ -319,6 +376,19 @@ public class MainApplicationFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnDecryptActionPerformed
 
+    private void btnRemoveMappingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveMappingActionPerformed
+        String selectedCipher = (String)mappingList.getSelectedValue();
+        int cipherIndex = selectedCipher.charAt(0) - 65;
+        
+        mapping[cipherIndex] = cipherIndex - 32;
+        model.remove(mappingList.getSelectedIndex());
+    }//GEN-LAST:event_btnRemoveMappingActionPerformed
+
+    private void emptyMapping() {
+        for(int i = 0; i < 26; i++) {
+            mapping[i] = i-32;
+        }
+    }
     
     private File openFile() {
         int returnVal = fileChooser.showOpenDialog(this);
@@ -372,6 +442,8 @@ public class MainApplicationFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton btnDecrypt;
     private javax.swing.JButton btnMap;
+    private javax.swing.JButton btnRemoveMapping;
+    private javax.swing.JTextArea cipherArea;
     private javax.swing.JLabel cipherFilename;
     private javax.swing.JList cipherFreqList;
     private javax.swing.JMenuItem contentsMenuItem;
@@ -388,10 +460,13 @@ public class MainApplicationFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JList mappingList;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JButton openCipher;
