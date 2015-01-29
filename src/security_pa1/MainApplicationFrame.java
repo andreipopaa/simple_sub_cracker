@@ -28,6 +28,7 @@ public class MainApplicationFrame extends javax.swing.JFrame {
         initComponents();
         mappingList.setModel(model);
         cipherArea.setEditable(false);
+        decryptArea.setEditable(false);
         emptyMapping();
     }
 

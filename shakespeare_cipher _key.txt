@@ -1,0 +1,27 @@
+shakespeare_cipher key
+A - m
+B - g
+C - z
+D - s
+E - n
+F - k
+G - c
+H - o
+I - f
+J - p
+K - v
+L - b
+M - t
+N - e
+O - x
+P - d
+Q - r
+R - l
+S - w
+T - h
+U - i
+V - q
+W - y
+X - u
+Y - j
+Z - a
