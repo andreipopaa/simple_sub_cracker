@@ -1,0 +1,27 @@
+schneier_cipher key
+A - g
+B - t
+C - p
+D - z
+E - d
+F - y
+G - m
+H - c
+I - q
+J - v
+K - w
+L - b
+M - a
+N - n
+O - l
+P - o
+Q - f
+R - h
+S - i
+T - k
+U - x
+V - q
+W - e
+X - r
+Y - s
+Z - u
